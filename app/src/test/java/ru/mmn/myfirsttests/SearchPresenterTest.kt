@@ -2,7 +2,7 @@ package com.geekbrains.tests
 
 import ru.mmn.myfirsttests.model.SearchResponse
 import ru.mmn.myfirsttests.model.SearchResult
-import ru.mmn.myfirsttests.presenter.SearchPresenter
+import ru.mmn.myfirsttests.presenter.search.SearchPresenter
 import ru.mmn.myfirsttests.repository.GitHubRepository
 import ru.mmn.myfirsttests.view.ViewContract
 import org.junit.Assert.*
@@ -12,6 +12,7 @@ import org.mockito.Mock
 import org.mockito.Mockito.*
 import org.mockito.MockitoAnnotations
 import retrofit2.Response
+import ru.mmn.myfirsttests.view.search.ViewSearchContract
 
 //Тестируем наш Презентер
 class SearchPresenterTest {
@@ -22,7 +23,7 @@ class SearchPresenterTest {
     private lateinit var repository: GitHubRepository
 
     @Mock
-    private lateinit var viewContract: ViewContract
+    private lateinit var viewContract: ViewSearchContract
 
     @Before
     fun setUp() {

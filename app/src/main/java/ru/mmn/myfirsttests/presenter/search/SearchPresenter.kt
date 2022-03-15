@@ -1,10 +1,10 @@
-package ru.mmn.myfirsttests.presenter
+package ru.mmn.myfirsttests.presenter.search
 
 import ru.mmn.myfirsttests.model.SearchResponse
 import ru.mmn.myfirsttests.repository.GitHubRepository
 import ru.mmn.myfirsttests.repository.GitHubRepository.GitHubRepositoryCallback
-import ru.mmn.myfirsttests.view.ViewContract
 import retrofit2.Response
+import ru.mmn.myfirsttests.view.search.ViewSearchContract
 
 /**
  * В архитектуре MVP все запросы на получение данных адресуются в Репозиторий.
@@ -15,9 +15,9 @@ import retrofit2.Response
  */
 
 internal class SearchPresenter internal constructor(
-    private val viewContract: ViewContract,
+    private val viewContract: ViewSearchContract,
     private val repository: GitHubRepository
-) : PresenterContract, GitHubRepositoryCallback {
+) : PresenterSearchContract, GitHubRepositoryCallback {
 
     override fun searchGitHub(searchQuery: String) {
         viewContract.displayLoading(true)

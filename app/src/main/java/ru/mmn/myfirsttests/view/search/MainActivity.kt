@@ -1,4 +1,4 @@
-package ru.mmn.myfirsttests.view
+package ru.mmn.myfirsttests.view.search
 
 import android.os.Bundle
 import android.view.View
@@ -9,18 +9,21 @@ import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import ru.mmn.myfirsttests.model.SearchResult
 import ru.mmn.myfirsttests.presenter.PresenterContract
-import ru.mmn.myfirsttests.presenter.SearchPresenter
+import ru.mmn.myfirsttests.presenter.search.SearchPresenter
 import ru.mmn.myfirsttests.repository.GitHubApi
 import ru.mmn.myfirsttests.repository.GitHubRepository
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import ru.mmn.myfirsttests.view.details.DetailsActivity
 import ru.mmn.myfirsttests.R
+import ru.mmn.myfirsttests.presenter.search.PresenterSearchContract
 import java.util.*
 
-class MainActivity : AppCompatActivity(), ViewContract {
+class MainActivity : AppCompatActivity(), ViewSearchContract {
 
+    private var totalCount: Int = 0
     private val adapter = SearchResultAdapter()
-    private val presenter: PresenterContract = SearchPresenter(this, createRepository())
+    private val presenter: PresenterSearchContract = SearchPresenter(this, createRepository())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,9 +32,14 @@ class MainActivity : AppCompatActivity(), ViewContract {
     }
 
     private fun setUI() {
+        toDetailsActivityButton.setOnClickListener {
+            startActivity(DetailsActivity.getIntent(this, totalCount)
+            )
+        }
         setQueryListener()
         setRecyclerView()
     }
+
 
     private fun setRecyclerView() {
         recyclerView.setHasFixedSize(true)
@@ -73,10 +81,10 @@ class MainActivity : AppCompatActivity(), ViewContract {
         searchResults: List<SearchResult>,
         totalCount: Int
     ) {
+        this.totalCount = totalCount
         adapter.updateResults(searchResults)
-        resultsCountTextView.text =
-            String.format(Locale.getDefault(), getString(R.string.results_count), totalCount)
     }
+
 
     override fun displayError() {
         Toast.makeText(this, getString(R.string.undefined_error), Toast.LENGTH_SHORT).show()
