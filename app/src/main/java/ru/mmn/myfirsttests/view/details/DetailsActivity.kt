@@ -6,9 +6,14 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_details.*
 import ru.mmn.myfirsttests.R
+import ru.mmn.myfirsttests.presenter.details.DetailsPresenter
+import ru.mmn.myfirsttests.presenter.details.PresenterDetailsContract
+import ru.mmn.myfirsttests.view.search.MainActivity
 import java.util.*
 
 class DetailsActivity : AppCompatActivity(), ViewDetailsContract {
+
+    private val presenter: PresenterDetailsContract = DetailsPresenter(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -18,6 +23,17 @@ class DetailsActivity : AppCompatActivity(), ViewDetailsContract {
 
     private fun setUI() {
         val count = intent.getIntExtra(TOTAL_COUNT_EXTRA, 0)
+        presenter.setCounter(count)
+        setCountText(count)
+        decrementButton.setOnClickListener { presenter.onDecrement() }
+        incrementButton.setOnClickListener { presenter.onIncrement() }
+    }
+
+    override fun setCount(count: Int) {
+        setCountText(count)
+    }
+
+    private fun setCountText(count: Int) {
         totalCountTextView.text =
             String.format(Locale.getDefault(), getString(R.string.results_count), count)
     }
