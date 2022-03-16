@@ -150,4 +150,18 @@ class SearchPresenterTest {
         //Убеждаемся, что ответ от сервера обрабатывается корректно
         verify(viewContract, times(1)).displaySearchResults(searchResults, 101)
     }
+
+    @Test
+    fun onAttach_Test(){
+        presenter.onAttach(viewContract)
+        presenter.handleGitHubError()
+        verify(viewContract, times(1)).displayError()
+    }
+
+    @Test
+    fun onDetach_Test(){
+        presenter.onDetach()
+        presenter.handleGitHubError()
+        verify(viewContract, times(0)).displayError()
+    }
 }
