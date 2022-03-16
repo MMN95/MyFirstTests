@@ -7,6 +7,7 @@ internal class DetailsPresenter internal constructor(
     private var viewContract: ViewDetailsContract? = null,
     private var count: Int = 0
 ) : PresenterDetailsContract {
+
     override fun setCounter(count: Int) {
         this.count = count
     }
