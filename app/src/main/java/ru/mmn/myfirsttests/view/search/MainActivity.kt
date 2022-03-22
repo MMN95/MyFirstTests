@@ -81,6 +81,10 @@ class MainActivity : AppCompatActivity(), ViewSearchContract {
         searchResults: List<SearchResult>,
         totalCount: Int
     ) {
+        with(totalCountTextView){
+            visibility = View.VISIBLE
+            text = String.format(Locale.getDefault(), getString(R.string.results_count), totalCount)
+        }
         this.totalCount = totalCount
         adapter.updateResults(searchResults)
     }
