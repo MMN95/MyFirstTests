@@ -6,9 +6,9 @@ import android.view.inputmethod.EditorInfo
 import android.widget.TextView.OnEditorActionListener
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.viewbinding.BuildConfig.BUILD_TYPE
 import kotlinx.android.synthetic.main.activity_main.*
 import ru.mmn.myfirsttests.model.SearchResult
-import ru.mmn.myfirsttests.presenter.PresenterContract
 import ru.mmn.myfirsttests.presenter.search.SearchPresenter
 import ru.mmn.myfirsttests.repository.GitHubApi
 import ru.mmn.myfirsttests.repository.GitHubRepository
@@ -17,6 +17,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 import ru.mmn.myfirsttests.view.details.DetailsActivity
 import ru.mmn.myfirsttests.R
 import ru.mmn.myfirsttests.presenter.search.PresenterSearchContract
+import ru.mmn.myfirsttests.repository.FakeGitHubRepository
+import ru.mmn.myfirsttests.repository.RepositoryContract
 import java.util.*
 
 class MainActivity : AppCompatActivity(), ViewSearchContract {
@@ -66,8 +68,14 @@ class MainActivity : AppCompatActivity(), ViewSearchContract {
         })
     }
 
-    private fun createRepository(): GitHubRepository {
-        return GitHubRepository(createRetrofit().create(GitHubApi::class.java))
+    private fun createRepository(): RepositoryContract {
+        return if(BUILD_TYPE == FAKE) {
+            FakeGitHubRepository()
+        } else {
+            GitHubRepository(createRetrofit().create(GitHubApi::class.java))
+        }
+
+
     }
 
     private fun createRetrofit(): Retrofit {
@@ -108,5 +116,6 @@ class MainActivity : AppCompatActivity(), ViewSearchContract {
 
     companion object {
         const val BASE_URL = "https://api.github.com"
+        const val FAKE = "FAKE"
     }
 }

@@ -8,6 +8,7 @@ import androidx.test.espresso.ViewAction
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
+import androidx.viewbinding.BuildConfig.BUILD_TYPE
 import org.hamcrest.Matcher
 import org.junit.After
 import org.junit.Before
@@ -31,9 +32,14 @@ class MainActivityEspressoTest {
             closeSoftKeyboard())
         onView(withId(R.id.searchEditText)).perform(pressImeActionButton())
 
-        onView(isRoot()).perform(delay())
-        onView(withId(R.id.totalCountTextView))
-            .check(matches(withText("Number of results: 2947")))
+        if (BUILD_TYPE == MainActivity.FAKE) {
+            onView(withId(R.id.totalCountTextView))
+                .check(matches(withText("Number of results: 42")))
+        } else {
+            onView(isRoot()).perform(delay())
+            onView(withId(R.id.totalCountTextView))
+                .check(matches(withText("Number of results: 2948")))
+        }
     }
 
     @After
