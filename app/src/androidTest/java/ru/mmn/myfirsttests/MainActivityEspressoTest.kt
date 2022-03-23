@@ -13,6 +13,7 @@ import org.hamcrest.Matcher
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
+import ru.mmn.myfirsttests.view.details.DetailsActivity
 import ru.mmn.myfirsttests.view.search.MainActivity
 
 class MainActivityEspressoTest {
@@ -40,6 +41,40 @@ class MainActivityEspressoTest {
             onView(withId(R.id.totalCountTextView))
                 .check(matches(withText("Number of results: 2948")))
         }
+    }
+
+    @Test
+    fun toDetailsButton_IsDisplayed(){
+        onView(withId(R.id.toDetailsActivityButton)).check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun toDetailsButtonText_IsVisible(){
+        onView(withId(R.id.toDetailsActivityButton)).check(matches(withText(R.string.to_details)))
+    }
+
+    @Test
+    fun searchEditText_IsDisplayed(){
+        onView(withId(R.id.searchEditText)).check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun searchEditTextHint_IsVisible(){
+        onView(withId(R.id.searchEditText)).check(matches(withHint(R.string.search_hint)))
+    }
+
+    @Test
+    fun toDetailsButton_IsWorking(){
+        onView(withId(R.id.toDetailsActivityButton)).perform(click())
+        onView(withId(R.id.totalCountTextView)).check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun searchEditText_IsWorking(){
+        onView(withId(R.id.searchEditText)).perform(click())
+        onView(withId(R.id.searchEditText)).perform(replaceText("hello"),
+            closeSoftKeyboard())
+        onView(withId(R.id.searchEditText)).check(matches(withText("hello")))
     }
 
     @After
