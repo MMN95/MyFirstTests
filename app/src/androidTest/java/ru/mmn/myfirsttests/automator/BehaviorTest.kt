@@ -3,9 +3,6 @@ package ru.mmn.myfirsttests.automator
 import android.content.Context
 import android.content.Intent
 import androidx.test.core.app.ApplicationProvider
-import androidx.test.espresso.Espresso
-import androidx.test.espresso.action.ViewActions
-import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SdkSuppress
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
@@ -16,7 +13,6 @@ import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import ru.mmn.myfirsttests.R
 
 @RunWith(AndroidJUnit4::class)
 @SdkSuppress(minSdkVersion = 18)
@@ -45,8 +41,8 @@ class BehaviorTest {
     fun test_SearchIsPositive() {
         val editText = uiDevice.findObject(By.res(packageName, "searchEditText"))
         editText.text = "UiAutomator"
-        Espresso.onView(ViewMatchers.withId(R.id.searchEditText))
-            .perform(ViewActions.pressImeActionButton())
+        val searchButton = uiDevice.findObject(By.res(packageName, "searchButton"))
+        searchButton.click()
         val changedText =
             uiDevice.wait(
                 Until.findObject(By.res(packageName, "totalCountTextView")),
