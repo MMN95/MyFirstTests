@@ -13,6 +13,7 @@ import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import ru.mmn.myfirsttests.*
 
 @RunWith(AndroidJUnit4::class)
 @SdkSuppress(minSdkVersion = 18)
@@ -33,97 +34,96 @@ class BehaviorTest {
 
     @Test
     fun test_MainActivityIsStarted() {
-        val editText = uiDevice.findObject(By.res(packageName, "searchEditText"))
+        val editText = uiDevice.findObject(By.res(packageName, TEST_SEARCH_EDIT_TEXT_ID))
         Assert.assertNotNull(editText)
     }
 
     @Test
     fun test_SearchIsPositive() {
-        val editText = uiDevice.findObject(By.res(packageName, "searchEditText"))
-        editText.text = "UiAutomator"
-        val searchButton = uiDevice.findObject(By.res(packageName, "searchButton"))
+        val editText = uiDevice.findObject(By.res(packageName, TEST_SEARCH_EDIT_TEXT_ID))
+        editText.text = TEST_UIAUTOMATOR_EDITTEXT_TEXT
+        val searchButton = uiDevice.findObject(By.res(packageName, TEST_SEARCH_BUTTON_ID))
         searchButton.click()
         val changedText =
             uiDevice.wait(
-                Until.findObject(By.res(packageName, "totalCountTextView")),
+                Until.findObject(By.res(packageName, TEST_TOTAL_COUNT_TEXTVIEW_ID)),
                 TIMEOUT
             )
-        Assert.assertEquals(changedText.text, "Number of results: 701")
-        Assert.assertNotEquals(changedText.text, "Number of results: 0")
+        Assert.assertEquals(changedText.text, TEST_UIAUTOMATOR_NUMBER_OF_SEARCH_RESULTS)
+        Assert.assertNotEquals(changedText.text, TEST_NUMBER_OF_RESULTS_ZERO)
     }
 
     @Test
     fun test_OpenDetailsScreen() {
         val toDetails = uiDevice.findObject(By.res(packageName,
-            "toDetailsActivityButton"))
+            TEST_TO_DETAILS_ACTIVITY_BUTTON_ID))
         toDetails.click()
         val changedText =
             uiDevice.wait(
-                Until.findObject(By.res(packageName, "totalCountTextView")),
+                Until.findObject(By.res(packageName, TEST_TOTAL_COUNT_TEXTVIEW_ID)),
                 TIMEOUT
             )
-        Assert.assertEquals(changedText.text, "Number of results: 0")
-        Assert.assertNotEquals(changedText.text, "Number of results: 100")
+        Assert.assertEquals(changedText.text, TEST_NUMBER_OF_RESULTS_ZERO)
+        Assert.assertNotEquals(changedText.text, TEST_UIAUTOMATOR_NUMBER_OF_SEARCH_RESULTS)
     }
 
     @Test
     fun test_OpenDetailsScreenWithCorrectSearchResults() {
-        val editText = uiDevice.findObject(By.res(packageName, "searchEditText"))
-        editText.text = "UiAutomator"
-        val searchButton = uiDevice.findObject(By.res(packageName, "searchButton"))
+        val editText = uiDevice.findObject(By.res(packageName, TEST_SEARCH_EDIT_TEXT_ID))
+        editText.text = TEST_UIAUTOMATOR_EDITTEXT_TEXT
+        val searchButton = uiDevice.findObject(By.res(packageName, TEST_SEARCH_BUTTON_ID))
         searchButton.click()
         val mainActivityChangedText =
             uiDevice.wait(
-                Until.findObject(By.res(packageName, "totalCountTextView")),
+                Until.findObject(By.res(packageName, TEST_TOTAL_COUNT_TEXTVIEW_ID)),
                 TIMEOUT
             )
         val mainActivityTextResult = mainActivityChangedText.text
         Assert.assertEquals(mainActivityChangedText.text, mainActivityTextResult)
-        val toDetails = uiDevice.findObject(By.res(packageName, "toDetailsActivityButton"))
+        val toDetails = uiDevice.findObject(By.res(packageName, TEST_TO_DETAILS_ACTIVITY_BUTTON_ID))
         toDetails.click()
 
         //Не работает
         val detailsActivityChangedText =
-            uiDevice.findObject(By.res(packageName, "totalCountTextView"))
+            uiDevice.findObject(By.res(packageName, TEST_TOTAL_COUNT_TEXTVIEW_ID))
         val detailsActivityTextResult = detailsActivityChangedText.text
         Assert.assertEquals(detailsActivityTextResult, mainActivityTextResult)
     }
 
     @Test
-    fun test_DetailsActivityDecrementButtonIsWorking(){
+    fun test_DetailsActivityDecrementButtonIsWorking() {
         val toDetails = uiDevice.findObject(By.res(packageName,
-            "toDetailsActivityButton"))
+            TEST_TO_DETAILS_ACTIVITY_BUTTON_ID))
         toDetails.click()
         val changedText =
             uiDevice.wait(
-                Until.findObject(By.res(packageName, "totalCountTextView")),
+                Until.findObject(By.res(packageName, TEST_TOTAL_COUNT_TEXTVIEW_ID)),
                 TIMEOUT
             )
         val decrementButton = uiDevice.findObject(By.res(packageName,
-            "decrementButton"))
+            TEST_DECREMENT_BUTTON_ID))
         decrementButton.click()
-        Assert.assertEquals(changedText.text, "Number of results: -1")
-        Assert.assertNotEquals(changedText.text, "Number of results: 1")
+        Assert.assertEquals(changedText.text, TEST_NUMBER_OF_RESULTS_MINUS_1)
+        Assert.assertNotEquals(changedText.text, TEST_NUMBER_OF_RESULTS_PLUS_1)
     }
 
     @Test
-    fun test_DetailsActivityIncrementButtonIsWorking(){
+    fun test_DetailsActivityIncrementButtonIsWorking() {
         val toDetails = uiDevice.findObject(By.res(packageName,
-            "toDetailsActivityButton"))
+            TEST_TO_DETAILS_ACTIVITY_BUTTON_ID))
         toDetails.click()
         val changedText =
             uiDevice.wait(
-                Until.findObject(By.res(packageName, "totalCountTextView")),
+                Until.findObject(By.res(packageName, TEST_TOTAL_COUNT_TEXTVIEW_ID)),
                 TIMEOUT
             )
         val incrementButton = uiDevice.findObject(By.res(packageName,
-            "incrementButton"))
+            TEST_INCREMENT_BUTTON_ID))
         incrementButton.click()
-        Assert.assertEquals(changedText.text, "Number of results: 1")
-        Assert.assertNotEquals(changedText.text, "Number of results: -1")
+        Assert.assertEquals(changedText.text, TEST_NUMBER_OF_RESULTS_PLUS_1)
+        Assert.assertNotEquals(changedText.text, TEST_NUMBER_OF_RESULTS_MINUS_1)
 
     }
-
 
     companion object {
         private const val TIMEOUT = 5000L

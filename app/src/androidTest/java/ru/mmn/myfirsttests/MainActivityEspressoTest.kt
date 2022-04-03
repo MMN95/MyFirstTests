@@ -13,7 +13,6 @@ import org.hamcrest.Matcher
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
-import ru.mmn.myfirsttests.view.details.DetailsActivity
 import ru.mmn.myfirsttests.view.search.MainActivity
 
 class MainActivityEspressoTest {
@@ -21,13 +20,12 @@ class MainActivityEspressoTest {
     private lateinit var scenario: ActivityScenario<MainActivity>
 
     @Before
-    fun setup(){
+    fun setup() {
         scenario = ActivityScenario.launch(MainActivity::class.java)
     }
 
     @Test
-    fun activitySearch_IsWorking(){
-
+    fun activitySearch_IsWorking() {
         onView(withId(R.id.searchEditText)).perform(click())
         onView(withId(R.id.searchEditText)).perform(replaceText("algol"),
             closeSoftKeyboard())
@@ -44,33 +42,33 @@ class MainActivityEspressoTest {
     }
 
     @Test
-    fun toDetailsButton_IsDisplayed(){
+    fun toDetailsButton_IsDisplayed() {
         onView(withId(R.id.toDetailsActivityButton)).check(matches(isDisplayed()))
     }
 
     @Test
-    fun toDetailsButtonText_IsVisible(){
+    fun toDetailsButtonText_IsVisible() {
         onView(withId(R.id.toDetailsActivityButton)).check(matches(withText(R.string.to_details)))
     }
 
     @Test
-    fun searchEditText_IsDisplayed(){
+    fun searchEditText_IsDisplayed() {
         onView(withId(R.id.searchEditText)).check(matches(isDisplayed()))
     }
 
     @Test
-    fun searchEditTextHint_IsVisible(){
+    fun searchEditTextHint_IsVisible() {
         onView(withId(R.id.searchEditText)).check(matches(withHint(R.string.search_hint)))
     }
 
     @Test
-    fun toDetailsButton_IsWorking(){
+    fun toDetailsButton_IsWorking() {
         onView(withId(R.id.toDetailsActivityButton)).perform(click())
         onView(withId(R.id.totalCountTextView)).check(matches(isDisplayed()))
     }
 
     @Test
-    fun searchEditText_IsWorking(){
+    fun searchEditText_IsWorking() {
         onView(withId(R.id.searchEditText)).perform(click())
         onView(withId(R.id.searchEditText)).perform(replaceText("hello"),
             closeSoftKeyboard())
@@ -82,7 +80,7 @@ class MainActivityEspressoTest {
         scenario.close()
     }
 
-    private fun delay(): ViewAction? {
+    private fun delay(): ViewAction {
         return object : ViewAction {
             override fun getConstraints(): Matcher<View> = isRoot()
             override fun getDescription(): String = "wait for $2 seconds"
@@ -91,6 +89,5 @@ class MainActivityEspressoTest {
             }
         }
     }
-
 
 }

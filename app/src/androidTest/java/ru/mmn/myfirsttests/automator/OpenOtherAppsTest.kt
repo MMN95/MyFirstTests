@@ -15,6 +15,7 @@ import org.junit.runner.RunWith
 @SdkSuppress(minSdkVersion = 18)
 class OpenOtherAppsTest {
     private val uiDevice: UiDevice = UiDevice.getInstance(getInstrumentation())
+
     @Test
     fun test_OpenSettings() {
         uiDevice.pressHome()
