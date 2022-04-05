@@ -103,5 +103,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.6.10"
     androidTestImplementation 'androidx.test:rules:1.4.1-alpha05'
 
+    //Fragment testing
+    debugImplementation 'androidx.fragment:fragment-testing:1.4.1'
 
 }
