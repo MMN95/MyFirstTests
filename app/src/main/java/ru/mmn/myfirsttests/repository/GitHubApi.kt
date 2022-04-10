@@ -1,6 +1,7 @@
 package ru.mmn.myfirsttests.repository
 
 import io.reactivex.Observable
+import kotlinx.coroutines.Deferred
 import ru.mmn.myfirsttests.model.SearchResponse
 import retrofit2.Call
 import retrofit2.http.GET
@@ -21,4 +22,7 @@ internal interface GitHubApi {
     @GET("search/repositories")
     fun searchGithubRx(@Query("q") term: String?): Observable<SearchResponse>
 
+    @Headers("Accept: application/vnd.github.mercy-preview+json")
+    @GET("search/repositories")
+    fun searchGithubAsync(@Query("q") term: String?): Deferred<SearchResponse>
 }
