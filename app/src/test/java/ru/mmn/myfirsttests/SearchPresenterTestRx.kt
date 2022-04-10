@@ -9,7 +9,7 @@ import org.mockito.MockitoAnnotations
 import ru.mmn.myfirsttests.model.SearchResponse
 import ru.mmn.myfirsttests.presenter.search.SearchPresenter
 import ru.mmn.myfirsttests.repository.GitHubRepository
-import ru.mmn.myfirsttests.stubs.ScheduleProviderStub
+import ru.mmn.myfirsttests.presenter.ScheduleProviderStub
 import ru.mmn.myfirsttests.view.search.ViewSearchContract
 
 class SearchPresenterTestRx {

@@ -1,4 +1,4 @@
-package ru.mmn.myfirsttests.stubs
+package ru.mmn.myfirsttests.presenter
 
 import io.reactivex.Scheduler
 import io.reactivex.schedulers.Schedulers

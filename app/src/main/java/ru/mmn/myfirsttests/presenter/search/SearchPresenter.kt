@@ -4,6 +4,7 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableObserver
 import retrofit2.Response
 import ru.mmn.myfirsttests.SchedulerProvider
+import ru.mmn.myfirsttests.ScreenState
 import ru.mmn.myfirsttests.SearchSchedulerProvider
 import ru.mmn.myfirsttests.model.SearchResponse
 import ru.mmn.myfirsttests.repository.RepositoryCallback
