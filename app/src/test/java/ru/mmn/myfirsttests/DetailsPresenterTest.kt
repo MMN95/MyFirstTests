@@ -18,40 +18,40 @@ class DetailsPresenterTest {
     private lateinit var viewDetailsContract: ViewDetailsContract
 
     @Before
-    fun setUp(){
+    fun setUp() {
         MockitoAnnotations.initMocks(this)
         detailsPresenter = DetailsPresenter(null)
         detailsPresenter.onAttach(viewDetailsContract)
     }
 
     @Test
-    fun setCounter_Test(){
+    fun setCounter_Test() {
         detailsPresenter.setCounter(1)
         detailsPresenter.onIncrement()
         verify(viewDetailsContract, atLeastOnce()).setCount(2)
     }
 
     @Test
-    fun onIncrement_Test(){
+    fun onIncrement_Test() {
         detailsPresenter.onIncrement()
         verify(viewDetailsContract, times(1)).setCount(1)
     }
 
     @Test
-    fun onDecrement_Test(){
+    fun onDecrement_Test() {
         detailsPresenter.onDecrement()
         verify(viewDetailsContract, times(1)).setCount(-1)
     }
 
     @Test
-    fun onAttach_Test(){
+    fun onAttach_Test() {
         detailsPresenter.onAttach(viewDetailsContract)
         detailsPresenter.onIncrement()
         verify(viewDetailsContract, times(1)).setCount(1)
     }
 
     @Test
-    fun onDetach_Test(){
+    fun onDetach_Test() {
         detailsPresenter.onDetach()
         detailsPresenter.onIncrement()
         verify(viewDetailsContract, times(0)).setCount(1)

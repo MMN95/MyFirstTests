@@ -2,21 +2,21 @@ package ru.mmn.myfirsttests.view.search
 
 import android.os.Bundle
 import android.view.View
-import android.view.inputmethod.EditorInfo
-import android.widget.TextView.OnEditorActionListener
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.viewbinding.BuildConfig.BUILD_TYPE
 import kotlinx.android.synthetic.main.activity_main.*
-import ru.mmn.myfirsttests.model.SearchResult
-import ru.mmn.myfirsttests.presenter.PresenterContract
-import ru.mmn.myfirsttests.presenter.search.SearchPresenter
-import ru.mmn.myfirsttests.repository.GitHubApi
-import ru.mmn.myfirsttests.repository.GitHubRepository
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import ru.mmn.myfirsttests.view.details.DetailsActivity
 import ru.mmn.myfirsttests.R
+import ru.mmn.myfirsttests.model.SearchResult
 import ru.mmn.myfirsttests.presenter.search.PresenterSearchContract
+import ru.mmn.myfirsttests.presenter.search.SearchPresenter
+import ru.mmn.myfirsttests.repository.FakeGitHubRepository
+import ru.mmn.myfirsttests.repository.GitHubApi
+import ru.mmn.myfirsttests.repository.GitHubRepository
+import ru.mmn.myfirsttests.repository.RepositoryContract
+import ru.mmn.myfirsttests.view.details.DetailsActivity
 import java.util.*
 
 class MainActivity : AppCompatActivity(), ViewSearchContract {
@@ -36,38 +36,38 @@ class MainActivity : AppCompatActivity(), ViewSearchContract {
             startActivity(DetailsActivity.getIntent(this, totalCount)
             )
         }
-        setQueryListener()
         setRecyclerView()
+        setSearchButton()
     }
 
+    private fun setSearchButton() {
+        searchButton.setOnClickListener {
+            val query = searchEditText.text.toString()
+            if (query.isNotBlank()) {
+                presenter.searchGitHub(query)
+            } else {
+                Toast.makeText(
+                    this@MainActivity,
+                    getString(R.string.enter_search_word),
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
+    }
 
     private fun setRecyclerView() {
         recyclerView.setHasFixedSize(true)
         recyclerView.adapter = adapter
     }
 
-    private fun setQueryListener() {
-        searchEditText.setOnEditorActionListener(OnEditorActionListener { v, actionId, event ->
-            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                val query = searchEditText.text.toString()
-                if (query.isNotBlank()) {
-                    presenter.searchGitHub(query)
-                    return@OnEditorActionListener true
-                } else {
-                    Toast.makeText(
-                        this@MainActivity,
-                        getString(R.string.enter_search_word),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    return@OnEditorActionListener false
-                }
-            }
-            false
-        })
-    }
+    private fun createRepository(): RepositoryContract {
+        return if (BUILD_TYPE == FAKE) {
+            FakeGitHubRepository()
+        } else {
+            GitHubRepository(createRetrofit().create(GitHubApi::class.java))
+        }
 
-    private fun createRepository(): GitHubRepository {
-        return GitHubRepository(createRetrofit().create(GitHubApi::class.java))
+
     }
 
     private fun createRetrofit(): Retrofit {
@@ -79,8 +79,12 @@ class MainActivity : AppCompatActivity(), ViewSearchContract {
 
     override fun displaySearchResults(
         searchResults: List<SearchResult>,
-        totalCount: Int
+        totalCount: Int,
     ) {
+        with(totalCountTextView) {
+            visibility = View.VISIBLE
+            text = String.format(Locale.getDefault(), getString(R.string.results_count), totalCount)
+        }
         this.totalCount = totalCount
         adapter.updateResults(searchResults)
     }
@@ -104,5 +108,6 @@ class MainActivity : AppCompatActivity(), ViewSearchContract {
 
     companion object {
         const val BASE_URL = "https://api.github.com"
+        const val FAKE = "FAKE"
     }
 }
